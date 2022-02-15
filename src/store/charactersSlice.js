@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-const ENDPOINT = "https://star-wars-characters.glitch.me/api/search/";
+// eg:https://star-wars-characters.glitch.me/api/search/da
+const ENDPOINT = 'https://star-wars-characters.glitch.me/api/search/';
 
 const initialState = {
   data: [],
@@ -8,13 +9,13 @@ const initialState = {
 };
 
 export const fetchCharactersFromAPI = createAsyncThunk(
-  "characters/fetchCharacters",
+  'characters/fetchCharacters', // give name of the action
   async (searchTerm) => {
-    const response = await fetch(
-      ENDPOINT + searchTerm.toLowerCase()
-    ).then((response) => response.json());
+    const response = await fetch(ENDPOINT + searchTerm.toLowerCase()).then(
+      (response) => response.json(),
+    );
     return response.results;
-  }
+  },
 );
 
 export const charactersSlice = createSlice({
@@ -26,6 +27,7 @@ export const charactersSlice = createSlice({
     },
   },
   extraReducers: {
+    //handle action from fetchCharactersFromAPI
     [fetchCharactersFromAPI.fulfilled]: (state, action) => {
       state.data = action.payload;
       state.loading = false;
@@ -33,5 +35,5 @@ export const charactersSlice = createSlice({
     [fetchCharactersFromAPI.pending]: (state, action) => {
       state.loading = true;
     },
-  }
+  },
 });
